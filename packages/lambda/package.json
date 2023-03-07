@@ -1,9 +1,14 @@
 {
   "name": "@tsaws/lambda",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typesafe lambda invocations. Inspired by tRPC.",
   "license": "MIT",
   "author": "William Feng <william.feng91@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamfeng91/tsaws.git",
+    "directory": "packages/lambda"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
