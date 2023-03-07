@@ -1,73 +1,74 @@
-# Turborepo starter
+<div align="center">
+  <h1>@tsaws/lambda</h1>
+  <h3>Typesafe lambda invocations. Inspired by tRPC.</h3>
+</div>
 
-This is an official pnpm starter turborepo.
+<br />
 
-## What's inside?
+## Features
 
-This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+- Typesafety and autocompletion as if you are calling a local function.
+- No code generation.
+- No runtime overhead.
+- Works with any framework of your choice (Serverless, Pulumi, etc.)
 
-### Apps and Packages
+## Get Started
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+### In the callee
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+1. Simply export the types of the handlers.
 
-### Utilities
+   ```diff
+   // Your lambda handlers imported
+   import { listSubscriptions } from './listSubscriptionsHandler';
+   // or defined in the same file
+   export async function terminateSubscription(event) {}
 
-This turborepo has some additional tools already setup for you:
+   + const handlers = {
+   +   listSubscriptions,
+   +   terminateSubscription,
+   + };
+   + export type SubscriptionService = typeof handlers;
+   ```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### In the caller
 
-### Build
+1. ```sh
+   npm install --save @tsaws/lambda
+   ```
 
-To build all apps and packages, run the following command:
+1. ```typescript
+   import { createInvoker } from '@tsaws/lambda';
+   // Import the types defined in the callee. If they are in the same git repo, you can
+   // just import from a relative path. Otherwise you might need to export it as an npm
+   // package.
+   // Note that this DOES NOT import any code, only the types.
+   import type { SubscriptionService } from '@my-org/subscription-service';
 
-```
-cd my-turborepo
-pnpm run build
-```
+   const subscriptionService = createInvoker<SubscriptionService>();
 
-### Develop
+   export async function handler({ userId }) {
+     const subscriptions =
+       await subscriptionService.listSubscriptions.invokeSync({
+         userId,
+       });
 
-To develop all apps and packages, run the following command:
+     return {
+       subscriptions,
+     };
+   }
+   ```
 
-```
-cd my-turborepo
-pnpm run dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-pnpm dlx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
-```
-pnpm dlx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+1. Pass the callee lambda ARNs as environment variables to the caller. For example with Serverless,
+   ```yaml
+   functions:
+     caller:
+       handler: index.handler
+       environment:
+         # The name comes from uppercasing the method name "listSubscriptions"
+         # exported in subscription-service/index.ts and prefixed with "TSAWS_FN_".
+         # If you don't want to use this convention, you can also pass the ARNs
+         # in the `createInvoker` call.
+         TSAWS_FN_LISTSUBSCRIPTIONS: 'subscription-service-${sls:stage}-listSubscriptionsFn'
+         TSAWS_FN_TERMINATESUBSCRIPTION: 'subscription-service-${sls:stage}-terminateSubscriptionFn'
+   ```

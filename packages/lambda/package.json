@@ -1,0 +1,49 @@
+{
+  "name": "@tsaws/lambda",
+  "version": "0.0.1",
+  "description": "Typesafe lambda invocations. Inspired by tRPC.",
+  "license": "MIT",
+  "author": "William Feng <william.feng91@gmail.com>",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.test-d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin rollup-plugin-swc3",
+    "prepublishOnly": "pnpm build",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "coverage": "vitest run --coverage",
+    "typecheck": "vitest typecheck --no-watch",
+    "typecheck:watch": "vitest typecheck"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-lambda": "^3"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-lambda": "3",
+    "@types/node": "^18.14.6",
+    "@vitest/coverage-istanbul": "^0.29.2",
+    "rollup": "^2.79.1",
+    "tslib": "^2.5.0",
+    "typescript": "~4.9.5",
+    "vitest": "^0.29.2"
+  }
+}

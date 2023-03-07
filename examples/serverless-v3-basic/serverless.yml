@@ -1,0 +1,38 @@
+service: serverless-v3-basic
+frameworkVersion: '3'
+
+plugins:
+  - serverless-esbuild
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-southeast-2
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action: 'lambda:Invoke*'
+          Resource:
+            - '*'
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    exclude:
+      - '@aws-sdk/*'
+  prune:
+    automatic: true
+    number: 3
+
+functions:
+  listSubscriptions:
+    handler: subscription-service/list-subscriptions.listSubscriptions
+  getUserDetails:
+    handler: user-service/get-user-details.getUserDetails
+    environment:
+      # The name comes from uppercasing the method name "listSubscriptions"
+      # exported in subscription-service/index.ts and prefixed with "TSAWS_FN_"
+      TSAWS_FN_LISTSUBSCRIPTIONS: '${self:service}-${sls:stage}-listSubscriptions'
