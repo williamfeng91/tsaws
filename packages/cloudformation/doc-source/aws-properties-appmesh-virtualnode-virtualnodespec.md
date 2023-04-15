@@ -1,0 +1,67 @@
+# AWS::AppMesh::VirtualNode VirtualNodeSpec<a name="aws-properties-appmesh-virtualnode-virtualnodespec"></a>
+
+An object that represents the specification of a virtual node\.
+
+## Syntax<a name="aws-properties-appmesh-virtualnode-virtualnodespec-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-appmesh-virtualnode-virtualnodespec-syntax.json"></a>
+
+```
+{
+  "[BackendDefaults](#cfn-appmesh-virtualnode-virtualnodespec-backenddefaults)" : BackendDefaults,
+  "[Backends](#cfn-appmesh-virtualnode-virtualnodespec-backends)" : [ Backend, ... ],
+  "[Listeners](#cfn-appmesh-virtualnode-virtualnodespec-listeners)" : [ Listener, ... ],
+  "[Logging](#cfn-appmesh-virtualnode-virtualnodespec-logging)" : Logging,
+  "[ServiceDiscovery](#cfn-appmesh-virtualnode-virtualnodespec-servicediscovery)" : ServiceDiscovery
+}
+```
+
+### YAML<a name="aws-properties-appmesh-virtualnode-virtualnodespec-syntax.yaml"></a>
+
+```
+  [BackendDefaults](#cfn-appmesh-virtualnode-virtualnodespec-backenddefaults):
+    BackendDefaults
+  [Backends](#cfn-appmesh-virtualnode-virtualnodespec-backends):
+    - Backend
+  [Listeners](#cfn-appmesh-virtualnode-virtualnodespec-listeners):
+    - Listener
+  [Logging](#cfn-appmesh-virtualnode-virtualnodespec-logging):
+    Logging
+  [ServiceDiscovery](#cfn-appmesh-virtualnode-virtualnodespec-servicediscovery):
+    ServiceDiscovery
+```
+
+## Properties<a name="aws-properties-appmesh-virtualnode-virtualnodespec-properties"></a>
+
+`BackendDefaults` <a name="cfn-appmesh-virtualnode-virtualnodespec-backenddefaults"></a>
+A reference to an object that represents the defaults for backends\.  
+_Required_: No  
+_Type_: [BackendDefaults](aws-properties-appmesh-virtualnode-backenddefaults.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Backends` <a name="cfn-appmesh-virtualnode-virtualnodespec-backends"></a>
+The backends that the virtual node is expected to send outbound traffic to\.  
+App Mesh doesn't validate the existence of those virtual services specified in backends\. This is to prevent a cyclic dependency between virtual nodes and virtual services creation\. Make sure the virtual service name is correct\. The virtual service can be created afterwards if it doesn't already exist\.
+_Required_: No  
+_Type_: List of [Backend](aws-properties-appmesh-virtualnode-backend.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Listeners` <a name="cfn-appmesh-virtualnode-virtualnodespec-listeners"></a>
+The listener that the virtual node is expected to receive inbound traffic from\. You can specify one listener\.  
+_Required_: No  
+_Type_: List of [Listener](aws-properties-appmesh-virtualnode-listener.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Logging` <a name="cfn-appmesh-virtualnode-virtualnodespec-logging"></a>
+The inbound and outbound access logging information for the virtual node\.  
+_Required_: No  
+_Type_: [Logging](aws-properties-appmesh-virtualnode-logging.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`ServiceDiscovery` <a name="cfn-appmesh-virtualnode-virtualnodespec-servicediscovery"></a>
+The service discovery information for the virtual node\. If your virtual node does not expect ingress traffic, you can omit this parameter\. If you specify a `listener`, then you must specify service discovery information\.  
+_Required_: No  
+_Type_: [ServiceDiscovery](aws-properties-appmesh-virtualnode-servicediscovery.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)

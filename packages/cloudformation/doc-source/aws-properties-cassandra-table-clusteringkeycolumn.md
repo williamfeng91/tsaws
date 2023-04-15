@@ -1,0 +1,41 @@
+# AWS::Cassandra::Table ClusteringKeyColumn<a name="aws-properties-cassandra-table-clusteringkeycolumn"></a>
+
+Defines an individual column within the clustering key\.
+
+## Syntax<a name="aws-properties-cassandra-table-clusteringkeycolumn-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-cassandra-table-clusteringkeycolumn-syntax.json"></a>
+
+```
+{
+  "[Column](#cfn-cassandra-table-clusteringkeycolumn-column)" : Column,
+  "[OrderBy](#cfn-cassandra-table-clusteringkeycolumn-orderby)" : String
+}
+```
+
+### YAML<a name="aws-properties-cassandra-table-clusteringkeycolumn-syntax.yaml"></a>
+
+```
+  [Column](#cfn-cassandra-table-clusteringkeycolumn-column):
+    Column
+  [OrderBy](#cfn-cassandra-table-clusteringkeycolumn-orderby): String
+```
+
+## Properties<a name="aws-properties-cassandra-table-clusteringkeycolumn-properties"></a>
+
+`Column` <a name="cfn-cassandra-table-clusteringkeycolumn-column"></a>
+The name and data type of this clustering key column\.  
+_Required_: Yes  
+_Type_: [Column](aws-properties-cassandra-table-column.md)  
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+
+`OrderBy` <a name="cfn-cassandra-table-clusteringkeycolumn-orderby"></a>
+The order in which this column's data is stored:
+
+- `ASC` \(default\) \- The column's data is stored in ascending order\.
+- `DESC` \- The column's data is stored in descending order\.
+  _Required_: No  
+  _Type_: String  
+  _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)

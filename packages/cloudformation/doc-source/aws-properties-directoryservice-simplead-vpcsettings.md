@@ -1,0 +1,39 @@
+# AWS::DirectoryService::SimpleAD VpcSettings<a name="aws-properties-directoryservice-simplead-vpcsettings"></a>
+
+Contains VPC information for the [CreateDirectory](https://docs.aws.amazon.com/directoryservice/latest/devguide/API_CreateDirectory.html) or [CreateMicrosoftAD](https://docs.aws.amazon.com/directoryservice/latest/devguide/API_CreateMicrosoftAD.html) operation\.
+
+## Syntax<a name="aws-properties-directoryservice-simplead-vpcsettings-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-directoryservice-simplead-vpcsettings-syntax.json"></a>
+
+```
+{
+  "[SubnetIds](#cfn-directoryservice-simplead-vpcsettings-subnetids)" : [ String, ... ],
+  "[VpcId](#cfn-directoryservice-simplead-vpcsettings-vpcid)" : String
+}
+```
+
+### YAML<a name="aws-properties-directoryservice-simplead-vpcsettings-syntax.yaml"></a>
+
+```
+  [SubnetIds](#cfn-directoryservice-simplead-vpcsettings-subnetids):
+    - String
+  [VpcId](#cfn-directoryservice-simplead-vpcsettings-vpcid): String
+```
+
+## Properties<a name="aws-properties-directoryservice-simplead-vpcsettings-properties"></a>
+
+`SubnetIds` <a name="cfn-directoryservice-simplead-vpcsettings-subnetids"></a>
+The identifiers of the subnets for the directory servers\. The two subnets must be in different Availability Zones\. AWS Directory Service specifies a directory server and a DNS server in each of these subnets\.  
+_Required_: Yes  
+_Type_: List of String  
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
+
+`VpcId` <a name="cfn-directoryservice-simplead-vpcsettings-vpcid"></a>
+The identifier of the VPC in which to create the directory\.  
+_Required_: Yes  
+_Type_: String  
+_Pattern_: `^(vpc-[0-9a-f]{8}|vpc-[0-9a-f]{17})$`  
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)

@@ -1,0 +1,53 @@
+# AWS::KinesisFirehose::DeliveryStream CloudWatchLoggingOptions<a name="aws-properties-kinesisfirehose-deliverystream-cloudwatchloggingoptions"></a>
+
+The `CloudWatchLoggingOptions` property type specifies Amazon CloudWatch Logs \(CloudWatch Logs\) logging options that Amazon Kinesis Data Firehose \(Kinesis Data Firehose\) uses for the delivery stream\.
+
+## Syntax<a name="aws-properties-kinesisfirehose-deliverystream-cloudwatchloggingoptions-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-kinesisfirehose-deliverystream-cloudwatchloggingoptions-syntax.json"></a>
+
+```
+{
+  "[Enabled](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-enabled)" : Boolean,
+  "[LogGroupName](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-loggroupname)" : String,
+  "[LogStreamName](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-logstreamname)" : String
+}
+```
+
+### YAML<a name="aws-properties-kinesisfirehose-deliverystream-cloudwatchloggingoptions-syntax.yaml"></a>
+
+```
+  [Enabled](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-enabled): Boolean
+  [LogGroupName](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-loggroupname): String
+  [LogStreamName](#cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-logstreamname): String
+```
+
+## Properties<a name="aws-properties-kinesisfirehose-deliverystream-cloudwatchloggingoptions-properties"></a>
+
+`Enabled` <a name="cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-enabled"></a>
+Indicates whether CloudWatch Logs logging is enabled\.  
+_Required_: No  
+_Type_: Boolean  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`LogGroupName` <a name="cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-loggroupname"></a>
+The name of the CloudWatch Logs log group that contains the log stream that Kinesis Data Firehose will use\.  
+Conditional\. If you enable logging, you must specify this property\.  
+_Required_: Conditional  
+_Type_: String  
+_Minimum_: `0`  
+_Maximum_: `512`  
+_Pattern_: `[\.\-_/#A-Za-z0-9]*`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`LogStreamName` <a name="cfn-kinesisfirehose-deliverystream-cloudwatchloggingoptions-logstreamname"></a>
+The name of the CloudWatch Logs log stream that Kinesis Data Firehose uses to send logs about data delivery\.  
+Conditional\. If you enable logging, you must specify this property\.  
+_Required_: Conditional  
+_Type_: String  
+_Minimum_: `0`  
+_Maximum_: `512`  
+_Pattern_: `[^:*]*`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
