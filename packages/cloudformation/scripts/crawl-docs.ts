@@ -37,17 +37,22 @@ function formatInlineContent(content: string) {
 }
 
 async function getResourceMd(fileName: string) {
-  const content = await readFile(path.join(__dirname, '../doc-source', fileName), 'utf-8');
+  const content = await readFile(
+    path.join(__dirname, '../doc-source', fileName),
+    'utf-8'
+  );
   const parsed = md.parse(content, {});
 
-  const h1CloseIndex = parsed.findIndex((t) => t.type === 'heading_close' && t.tag === 'h1');
+  const h1CloseIndex = parsed.findIndex(
+    (t) => t.type === 'heading_close' && t.tag === 'h1'
+  );
   const result: ResourceDocs = {
     text: '',
     properties: {},
   };
   for (const token of parsed.slice(h1CloseIndex + 1)) {
     if (token.type === 'heading_open') break;
-    if (token.level !== 1) continue;
+    // if (token.level !== 1) continue;
     if (token.type !== 'inline') continue;
     if (!result.text) {
       result.text = formatInlineContent(token.content);
@@ -56,19 +61,28 @@ async function getResourceMd(fileName: string) {
     }
   }
   const propertiesInlineIndex = parsed.findIndex(
-    (t) => t.type === 'inline' && t.content.startsWith('Properties<a'),
+    (t) => t.type === 'inline' && t.content.startsWith('Properties<a')
   );
   let currPropertyName: string | undefined;
   for (const token of parsed.slice(propertiesInlineIndex + 1)) {
     if (token.type === 'heading_open') break;
-    if (token.level !== 1) continue;
+    // if (token.level !== 1) continue;
     if (token.type !== 'inline') continue;
-    const matches = token.content.match(/^\s*`([^`]+)`\s*\n*/);
+    const matches =
+      token.level === 1 ? token.content.match(/^\s*`([^`]+)`\s*\n*/) : null;
     if (!matches?.[1]) {
       if (currPropertyName) {
-        result.properties[currPropertyName].text += `\n${formatInlineContent(token.content)}`;
+        result.properties[currPropertyName].text += `\n${formatInlineContent(
+          token.content
+        )}`;
       } else {
-        console.log('Invalid property doc', fileName, currPropertyName, token.content, '\n');
+        console.log(
+          'Invalid property doc',
+          fileName,
+          currPropertyName,
+          token.content,
+          '\n'
+        );
       }
       continue;
     }
@@ -81,10 +95,15 @@ async function getResourceMd(fileName: string) {
 }
 
 async function getPropertyMd(fileName: string) {
-  const content = await readFile(path.join(__dirname, '../doc-source', fileName), 'utf-8');
+  const content = await readFile(
+    path.join(__dirname, '../doc-source', fileName),
+    'utf-8'
+  );
   const parsed = md.parse(content, {});
 
-  const h1CloseIndex = parsed.findIndex((t) => t.type === 'heading_close' && t.tag === 'h1');
+  const h1CloseIndex = parsed.findIndex(
+    (t) => t.type === 'heading_close' && t.tag === 'h1'
+  );
   const result: PropertyDocs = {
     text: '',
   };
@@ -115,7 +134,8 @@ async function main() {
       return async () => {
         try {
           const [, namespace, typeName] = resourceFullName.split('::');
-          const fileName = `aws-resource-${namespace}-${typeName}.md`.toLowerCase();
+          const fileName =
+            `aws-resource-${namespace}-${typeName}.md`.toLowerCase();
           const result = await getResourceMd(fileName);
           resourceDocs[resourceFullName] = result;
         } catch (error) {
@@ -126,7 +146,7 @@ async function main() {
           console.log(error);
         }
       };
-    },
+    }
   );
   const propertyTasks = Object.entries(schema.PropertyTypes).map(
     ([propertyFullName, resourceType]) => {
@@ -151,7 +171,7 @@ async function main() {
           console.log(error);
         }
       };
-    },
+    }
   );
   await Throttle.all([...resourceTasks, ...propertyTasks], {
     maxInProgress: 100,
@@ -162,17 +182,17 @@ async function main() {
     JSON.stringify(
       {
         resources: Object.fromEntries(
-          Object.entries(resourceDocs).sort((a, b) => a[0].localeCompare(b[0])),
+          Object.entries(resourceDocs).sort((a, b) => a[0].localeCompare(b[0]))
         ),
         properties: Object.fromEntries(
-          Object.entries(propertyDocs).sort((a, b) => a[0].localeCompare(b[0])),
+          Object.entries(propertyDocs).sort((a, b) => a[0].localeCompare(b[0]))
         ),
         notFound,
       },
       null,
-      2,
+      2
     ),
-    'utf-8',
+    'utf-8'
   );
 }
 

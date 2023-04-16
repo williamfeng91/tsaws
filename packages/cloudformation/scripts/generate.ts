@@ -19,7 +19,8 @@ type BasicTypeSuffix = 'Type' | 'ItemType';
 
 const outputDir = path.join(__dirname, '../types');
 
-const { resources: resourceDocsMap, properties: propertyDocsMap } = docs as Docs;
+const { resources: resourceDocsMap, properties: propertyDocsMap } =
+  docs as Docs;
 
 function formatDocText(indent: number, text?: string) {
   const identText = ''.padEnd(indent, ' ');
@@ -41,17 +42,22 @@ function determineTypeScriptType(
   property: TypeProperties,
   propertyName: string,
   typeSuffix: BasicTypeSuffix,
-  prefix = '',
+  prefix = ''
 ): string | undefined {
   if (property[typeSuffix] === 'List') {
-    return `List<${determineTypeScriptType(property, propertyName, 'ItemType', prefix)}>`;
+    return `List<${determineTypeScriptType(
+      property,
+      propertyName,
+      'ItemType',
+      prefix
+    )}>`;
   }
   if (property[typeSuffix] === 'Map') {
     return `{ [key: string]: ${determineTypeScriptType(
       property,
       propertyName,
       'ItemType',
-      prefix,
+      prefix
     )} }`;
   }
   if (property[typeSuffix] === 'Tag') {
@@ -61,11 +67,16 @@ function determineTypeScriptType(
     return innerTypeName('.' + property[typeSuffix], prefix);
   }
 
-  if (property[typeSuffix === 'Type' ? 'PrimitiveType' : 'PrimitiveItemType'] === undefined) {
+  if (
+    property[typeSuffix === 'Type' ? 'PrimitiveType' : 'PrimitiveItemType'] ===
+    undefined
+  ) {
     return undefined;
   }
   let primitiveType =
-    property[typeSuffix === 'Type' ? 'PrimitiveType' : 'PrimitiveItemType']!.toLowerCase();
+    property[
+      typeSuffix === 'Type' ? 'PrimitiveType' : 'PrimitiveItemType'
+    ]!.toLowerCase();
   if (['json', 'map'].includes(primitiveType)) {
     return '{ [key: string]: any }';
   }
@@ -81,12 +92,17 @@ function determineTypeScriptType(
 function propertiesEntries(
   properties: TypePropertiesMap,
   prefix: string = '',
-  useNonNullAssertion: boolean = false,
+  useNonNullAssertion: boolean = false
 ) {
   const nonOptionalPostfix = useNonNullAssertion ? '!' : '';
   return filter(
     map(properties, (property: TypeProperties, propertyName: string) => {
-      const scriptType = determineTypeScriptType(property, propertyName, 'Type', prefix);
+      const scriptType = determineTypeScriptType(
+        property,
+        propertyName,
+        'Type',
+        prefix
+      );
       if (scriptType === undefined) {
         // @TODO fix this,
         // In JSON definit in AWS::DataBrew::Recipe.Action -> Properties -> Parameters
@@ -95,10 +111,12 @@ function propertiesEntries(
       }
       return [
         propertyName,
-        `${propertyName}${property.Required ? nonOptionalPostfix : '?'}: ${scriptType};`,
+        `${propertyName}${
+          property.Required ? nonOptionalPostfix : '?'
+        }: ${scriptType};`,
       ] as const;
     }),
-    (tuple) => !!tuple[1],
+    (tuple) => !!tuple[1]
   );
 }
 
@@ -119,7 +137,7 @@ function generateInnerInterface(
   name: string,
   resourceType: ResourceType,
   resourceDocs: ResourceDocs | undefined,
-  prefix = '',
+  prefix = ''
 ): string {
   return `/**
  * ${formatDocText(0, resourceDocs?.text)}
@@ -128,7 +146,10 @@ function generateInnerInterface(
 export interface ${name} {
 ${propertiesEntries(resourceType.Properties, prefix)
   .map(([propertyName, line]) => {
-    const propertyDocsText = formatDocText(2, resourceDocs?.properties[propertyName]?.text);
+    const propertyDocsText = formatDocText(
+      2,
+      resourceDocs?.properties[propertyName]?.text
+    );
     return `${
       propertyDocsText
         ? `  /**
@@ -146,7 +167,7 @@ function generateInnerType(
   name: string,
   type: TypeProperties,
   propertyDocs: PropertyDocs | undefined,
-  prefix = '',
+  prefix = ''
 ) {
   return `/**
  * ${formatDocText(0, propertyDocs?.text)}
@@ -159,13 +180,16 @@ function generateTopLevelInterface(
   namespace: string,
   typeName: string,
   resource: ResourceType,
-  resourceDocs: ResourceDocs | undefined,
+  resourceDocs: ResourceDocs | undefined
 ) {
   const properties = resource.Properties || {};
   return `export interface ${namespace}${typeName}Properties {
 ${propertiesEntries(properties, `${namespace}${typeName}`)
   .map(([propertyName, line]) => {
-    const propertyDocsText = formatDocText(2, resourceDocs?.properties[propertyName]?.text);
+    const propertyDocsText = formatDocText(
+      2,
+      resourceDocs?.properties[propertyName]?.text
+    );
     return `${
       propertyDocsText
         ? `  /**
@@ -194,7 +218,7 @@ async function generateFile(
   resourceName: string,
   resource: ResourceType,
   innerTypes: Schema['PropertyTypes'],
-  resourceDocs: ResourceDocs | undefined,
+  resourceDocs: ResourceDocs | undefined
 ) {
   let innerHasTags = false;
   const innerTypesTemplates = Object.entries(innerTypes)
@@ -204,24 +228,30 @@ async function generateFile(
       const hasPrimitiveItemType = !!innerType.PrimitiveItemType;
       const hasType = !!innerType.Type;
 
-      return hasProperties || hasPrimitiveType || hasPrimitiveItemType || hasType;
+      return (
+        hasProperties || hasPrimitiveType || hasPrimitiveItemType || hasType
+      );
     })
     .map(([innerTypeFullName, innerType]) => {
-      const resolvedInnerTypeName = innerTypeName(innerTypeFullName, `${namespace}${resourceName}`);
+      const resolvedInnerTypeName = innerTypeName(
+        innerTypeFullName,
+        `${namespace}${resourceName}`
+      );
       if ((innerType as ResourceType).Properties) {
-        innerHasTags = innerHasTags || hasTags((innerType as ResourceType).Properties);
+        innerHasTags =
+          innerHasTags || hasTags((innerType as ResourceType).Properties);
         return generateInnerInterface(
           resolvedInnerTypeName,
           innerType as ResourceType,
           propertyDocsMap[innerTypeFullName] as ResourceDocs,
-          `${namespace}${resourceName}`,
+          `${namespace}${resourceName}`
         );
       } else {
         return generateInnerType(
           resolvedInnerTypeName,
           innerType as TypeProperties,
           propertyDocsMap[innerTypeFullName],
-          `${namespace}${resourceName}`,
+          `${namespace}${resourceName}`
         );
       }
     });
@@ -237,14 +267,16 @@ async function generateFile(
     namespace,
     resourceName,
     resource,
-    resourceDocs,
+    resourceDocs
   );
 
   const template = `${fileHeader}
 import { List, Value } from '../../shared-types/dataTypes';
 ${
   resourceImports.length > 0
-    ? `import { ${resourceImports.join(', ')} } from '../../shared-types/resource';
+    ? `import { ${resourceImports.join(
+        ', '
+      )} } from '../../shared-types/resource';
 `
     : ''
 }
@@ -252,50 +284,69 @@ ${innerTypesTemplates.join('\n\n')}
 ${generatedInterface}
 `;
 
-  await fs.ensureDir(path.resolve(outputDir, `./${adjustedCamelCase(namespace)}`));
+  await fs.ensureDir(
+    path.resolve(outputDir, `./${adjustedCamelCase(namespace)}`)
+  );
 
   await fs.writeFile(
-    path.resolve(outputDir, `./${adjustedCamelCase(namespace)}/${camelCase(resourceName)}.ts`),
+    path.resolve(
+      outputDir,
+      `./${adjustedCamelCase(namespace)}/${camelCase(resourceName)}.d.ts`
+    ),
     template,
-    { encoding: 'utf8' },
+    { encoding: 'utf8' }
   );
 }
 
 async function generateIndexReexportFile(
   fileHeader: string,
   namespace: string,
-  resourceTypeNames: string[],
+  resourceTypeNames: string[]
 ) {
   const template = `${fileHeader}
 
-${resourceTypeNames.map((typeName) => `export * from './${camelCase(typeName)}';`).join('\n')}
+${resourceTypeNames
+  .map((typeName) => `export * from './${camelCase(typeName)}';`)
+  .join('\n')}
 `;
 
   await fs.writeFile(
-    path.resolve(outputDir, `./${adjustedCamelCase(namespace)}/index.ts`),
+    path.resolve(outputDir, `./${adjustedCamelCase(namespace)}/index.d.ts`),
     template,
     {
       encoding: 'utf8',
-    },
+    }
   );
 }
 
 async function generateGrandIndexFile(
   fileHeader: string,
-  indexContent: { [key: string]: string[] },
+  indexContent: { [key: string]: string[] }
 ) {
   const importedResourcTypes: string[] = [];
   const lines: string[] = [];
 
-  forEach(indexContent, (dependentResourceTypeNames: string[], namespace: string) => {
-    const resourceTypes = dependentResourceTypeNames.map((t) => `${namespace}${t}Resource`);
-    lines.push(`import { ${resourceTypes.join(',')} } from './${adjustedCamelCase(namespace)}';`);
-    importedResourcTypes.push(...resourceTypes);
-  });
+  forEach(
+    indexContent,
+    (dependentResourceTypeNames: string[], namespace: string) => {
+      const resourceTypes = dependentResourceTypeNames.map(
+        (t) => `${namespace}${t}Resource`
+      );
+      lines.push(
+        `import { ${resourceTypes.join(',')} } from './${adjustedCamelCase(
+          namespace
+        )}';`
+      );
+      importedResourcTypes.push(...resourceTypes);
+    }
+  );
   lines.push('');
-  forEach(indexContent, (dependentResourceTypeNames: string[], namespace: string) => {
-    lines.push(`export * from './${adjustedCamelCase(namespace)}';`);
-  });
+  forEach(
+    indexContent,
+    (dependentResourceTypeNames: string[], namespace: string) => {
+      lines.push(`export * from './${adjustedCamelCase(namespace)}';`);
+    }
+  );
 
   const template = `${fileHeader}
 ${lines.join('\n')}
@@ -304,24 +355,35 @@ export type Resource =
 ${importedResourcTypes.map((t) => `  | ${t}`).join('\n')};
 `;
 
-  await fs.writeFile(path.resolve(outputDir, './index.ts'), template, { encoding: 'utf8' });
+  await fs.writeFile(path.resolve(outputDir, './index.d.ts'), template, {
+    encoding: 'utf8',
+  });
 }
 
-function generateFileHeader(regions: string[], schemaVersions: { [key: string]: string }) {
+function generateFileHeader(
+  regions: string[],
+  schemaVersions: { [key: string]: string }
+) {
   regions.sort();
   return `/**
  * Supported regions:
-${regions.map((region) => ` * - ${region} (version ${schemaVersions[region]})`).join('\n')}
+${regions
+  .map((region) => ` * - ${region} (version ${schemaVersions[region]})`)
+  .join('\n')}
  */`;
 }
 
-async function generateResourceAttributeMapFile(resourceTypes: ResourceTypeMap) {
+async function generateResourceAttributeMapFile(
+  resourceTypes: ResourceTypeMap
+) {
   const lines = chain(resourceTypes)
     .entries()
     .map(([resourceFullName, { Attributes: attributes }]) => {
       const attributeNames = Object.keys(attributes || {});
       if (attributeNames.length === 0) return '';
-      return `  '${resourceFullName}': ${attributeNames.map((n) => `'${n}'`).join(' | ')};`;
+      return `  '${resourceFullName}': ${attributeNames
+        .map((n) => `'${n}'`)
+        .join(' | ')};`;
     })
     .filter(Boolean)
     .value();
@@ -335,54 +397,70 @@ export interface ResourceAttributeMap extends BaseResourceAttributeMap {
 ${lines.join('\n')}
 }
 `;
-  await fs.writeFile(path.resolve(outputDir, './resource-attributes.ts'), template, {
-    encoding: 'utf-8',
-  });
+  await fs.writeFile(
+    path.resolve(outputDir, './resource-attributes.d.ts'),
+    template,
+    {
+      encoding: 'utf-8',
+    }
+  );
 }
 
 async function generateFilesFromSchema(
   schema: Schema,
   resourceSources: { [key: string]: string[] },
-  schemaVersions: { [key: string]: string },
+  schemaVersions: { [key: string]: string }
 ) {
   const regionsUsed = new Set<string>();
   const indexContent: { [key: string]: string[] } = {};
 
   const tasks: (() => Promise<any>)[] = [];
-  forEach(schema.ResourceTypes, (resource: ResourceType, resourceFullName: string) => {
-    const [, namespace, typeName] = resourceFullName.split('::');
-    // Avoid file name clash with index.ts
-    const sanitizedTypeName =
-      typeName.toLowerCase() === 'index' ? `${namespace}${typeName}` : typeName;
+  forEach(
+    schema.ResourceTypes,
+    (resource: ResourceType, resourceFullName: string) => {
+      const [, namespace, typeName] = resourceFullName.split('::');
+      // Avoid file name clash with index.d.ts
+      const sanitizedTypeName =
+        typeName.toLowerCase() === 'index'
+          ? `${namespace}${typeName}`
+          : typeName;
 
-    const fileHeader = generateFileHeader(resourceSources[resourceFullName], schemaVersions);
-    resourceSources[resourceFullName].forEach((region) => regionsUsed.add(region));
+      const fileHeader = generateFileHeader(
+        resourceSources[resourceFullName],
+        schemaVersions
+      );
+      resourceSources[resourceFullName].forEach((region) =>
+        regionsUsed.add(region)
+      );
 
-    const resourcePropertyTypes = pickBy(
-      schema.PropertyTypes,
-      (propertyType, propertyFullName: string) =>
-        propertyFullName.startsWith(resourceFullName + '.'),
-    );
+      const resourcePropertyTypes = pickBy(
+        schema.PropertyTypes,
+        (propertyType, propertyFullName: string) =>
+          propertyFullName.startsWith(resourceFullName + '.')
+      );
 
-    indexContent[namespace] = indexContent[namespace] || [];
-    indexContent[namespace].push(sanitizedTypeName);
+      indexContent[namespace] = indexContent[namespace] || [];
+      indexContent[namespace].push(sanitizedTypeName);
 
-    tasks.push(() =>
-      generateFile(
-        fileHeader,
-        namespace,
-        sanitizedTypeName,
-        resource,
-        resourcePropertyTypes,
-        resourceDocsMap[resourceFullName],
-      ),
-    );
-  });
+      tasks.push(() =>
+        generateFile(
+          fileHeader,
+          namespace,
+          sanitizedTypeName,
+          resource,
+          resourcePropertyTypes,
+          resourceDocsMap[resourceFullName]
+        )
+      );
+    }
+  );
 
   const indexFileHeader = generateFileHeader([...regionsUsed], schemaVersions);
 
   forEach(indexContent, (resourceTypeNames: string[], namespace: string) => {
-    tasks.push(() => generateIndexReexportFile(indexFileHeader, namespace, resourceTypeNames));
+    tasks.push(() =>
+      generateIndexReexportFile(indexFileHeader, namespace, resourceTypeNames)
+    );
   });
 
   tasks.push(() => generateGrandIndexFile(indexFileHeader, indexContent));
@@ -395,7 +473,8 @@ async function generateFilesFromSchema(
 }
 
 async function main() {
-  const { schema, schemaVersions, resourceSources } = mergedSchema as MergedSchema;
+  const { schema, schemaVersions, resourceSources } =
+    mergedSchema as MergedSchema;
   await generateFilesFromSchema(schema, resourceSources, schemaVersions);
 }
 
