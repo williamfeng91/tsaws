@@ -1,0 +1,56 @@
+{
+  "name": "@tsaws/cloudformation",
+  "version": "0.0.1",
+  "description": "Typesafe CloudFormation resources.",
+  "license": "MIT",
+  "author": "William Feng <william.feng91@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamfeng91/tsaws.git",
+    "directory": "packages/cloudformation"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "index.d.ts",
+  "files": [
+    "dist",
+    "serverless",
+    "shared-types",
+    "types",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin rollup-plugin-swc3",
+    "prepublishOnly": "pnpm generate && pnpm build",
+    "download-schemas": "ts-node scripts/download-schemas.ts",
+    "crawl-docs": "ts-node scripts/crawl-docs.ts",
+    "generate": "rm -rf types && ts-node scripts/generate.ts"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^3.29.0",
+    "@types/fs-extra": "^11.0.1",
+    "@types/lodash": "^4.14.192",
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^18",
+    "@types/node-fetch": "^2.6.3",
+    "fs-extra": "^11.1.1",
+    "lodash": "^4.17.21",
+    "markdown-it": "^12",
+    "node-fetch": "^2",
+    "promise-parallel-throttle": "^3.3.0",
+    "rollup": "^2.79.1",
+    "ts-node": "^10.9.1",
+    "typescript": "~5.0.3"
+  },
+  "peerDependencies": {
+    "@serverless/typescript": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "@serverless/typescript": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,78 @@
+# AWS::QuickSight::Dashboard BarChartSortConfiguration<a name="aws-properties-quicksight-dashboard-barchartsortconfiguration"></a>
+
+sort\-configuration\-description
+
+## Syntax<a name="aws-properties-quicksight-dashboard-barchartsortconfiguration-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-quicksight-dashboard-barchartsortconfiguration-syntax.json"></a>
+
+```
+{
+  "[CategoryItemsLimit](#cfn-quicksight-dashboard-barchartsortconfiguration-categoryitemslimit)" : ItemsLimitConfiguration,
+  "[CategorySort](#cfn-quicksight-dashboard-barchartsortconfiguration-categorysort)" : [ FieldSortOptions, ... ],
+  "[ColorItemsLimit](#cfn-quicksight-dashboard-barchartsortconfiguration-coloritemslimit)" : ItemsLimitConfiguration,
+  "[ColorSort](#cfn-quicksight-dashboard-barchartsortconfiguration-colorsort)" : [ FieldSortOptions, ... ],
+  "[SmallMultiplesLimitConfiguration](#cfn-quicksight-dashboard-barchartsortconfiguration-smallmultipleslimitconfiguration)" : ItemsLimitConfiguration,
+  "[SmallMultiplesSort](#cfn-quicksight-dashboard-barchartsortconfiguration-smallmultiplessort)" : [ FieldSortOptions, ... ]
+}
+```
+
+### YAML<a name="aws-properties-quicksight-dashboard-barchartsortconfiguration-syntax.yaml"></a>
+
+```
+  [CategoryItemsLimit](#cfn-quicksight-dashboard-barchartsortconfiguration-categoryitemslimit):
+    ItemsLimitConfiguration
+  [CategorySort](#cfn-quicksight-dashboard-barchartsortconfiguration-categorysort):
+    - FieldSortOptions
+  [ColorItemsLimit](#cfn-quicksight-dashboard-barchartsortconfiguration-coloritemslimit):
+    ItemsLimitConfiguration
+  [ColorSort](#cfn-quicksight-dashboard-barchartsortconfiguration-colorsort):
+    - FieldSortOptions
+  [SmallMultiplesLimitConfiguration](#cfn-quicksight-dashboard-barchartsortconfiguration-smallmultipleslimitconfiguration):
+    ItemsLimitConfiguration
+  [SmallMultiplesSort](#cfn-quicksight-dashboard-barchartsortconfiguration-smallmultiplessort):
+    - FieldSortOptions
+```
+
+## Properties<a name="aws-properties-quicksight-dashboard-barchartsortconfiguration-properties"></a>
+
+`CategoryItemsLimit` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-categoryitemslimit"></a>
+The limit on the number of categories displayed in a bar chart\.  
+_Required_: No  
+_Type_: [ItemsLimitConfiguration](aws-properties-quicksight-dashboard-itemslimitconfiguration.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`CategorySort` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-categorysort"></a>
+The sort configuration of category fields\.  
+_Required_: No  
+_Type_: List of [FieldSortOptions](aws-properties-quicksight-dashboard-fieldsortoptions.md)  
+_Maximum_: `100`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`ColorItemsLimit` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-coloritemslimit"></a>
+The limit on the number of values displayed in a bar chart\.  
+_Required_: No  
+_Type_: [ItemsLimitConfiguration](aws-properties-quicksight-dashboard-itemslimitconfiguration.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`ColorSort` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-colorsort"></a>
+The sort configuration of color fields in a bar chart\.  
+_Required_: No  
+_Type_: List of [FieldSortOptions](aws-properties-quicksight-dashboard-fieldsortoptions.md)  
+_Maximum_: `100`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`SmallMultiplesLimitConfiguration` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-smallmultipleslimitconfiguration"></a>
+The limit on the number of small multiples panels that are displayed\.  
+_Required_: No  
+_Type_: [ItemsLimitConfiguration](aws-properties-quicksight-dashboard-itemslimitconfiguration.md)  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`SmallMultiplesSort` <a name="cfn-quicksight-dashboard-barchartsortconfiguration-smallmultiplessort"></a>
+The sort configuration of the small multiples field\.  
+_Required_: No  
+_Type_: List of [FieldSortOptions](aws-properties-quicksight-dashboard-fieldsortoptions.md)  
+_Maximum_: `100`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)

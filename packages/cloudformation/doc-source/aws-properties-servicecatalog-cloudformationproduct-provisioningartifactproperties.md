@@ -1,0 +1,75 @@
+# AWS::ServiceCatalog::CloudFormationProduct ProvisioningArtifactProperties<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties"></a>
+
+Information about a provisioning artifact \(also known as a version\) for a product\.
+
+## Syntax<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties-syntax.json"></a>
+
+```
+{
+  "[Description](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-description)" : String,
+  "[DisableTemplateValidation](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-disabletemplatevalidation)" : Boolean,
+  "[Info](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-info)" : Json,
+  "[Name](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-name)" : String,
+  "[Type](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-type)" : String
+}
+```
+
+### YAML<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties-syntax.yaml"></a>
+
+```
+  [Description](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-description): String
+  [DisableTemplateValidation](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-disabletemplatevalidation): Boolean
+  [Info](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-info): Json
+  [Name](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-name): String
+  [Type](#cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-type): String
+```
+
+## Properties<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties-properties"></a>
+
+`Description` <a name="cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-description"></a>
+The description of the provisioning artifact, including how it differs from the previous provisioning artifact\.  
+_Required_: No  
+_Type_: String  
+_Maximum_: `8192`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`DisableTemplateValidation` <a name="cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-disabletemplatevalidation"></a>
+If set to true, AWS Service Catalog stops validating the specified provisioning artifact even if it is invalid\.  
+_Required_: No  
+_Type_: Boolean  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Info` <a name="cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-info"></a>
+Specify the template source with one of the following options, but not both\. Keys accepted: \[ `LoadTemplateFromURL`, `ImportFromPhysicalId` \]  
+The URL of the AWS CloudFormation template in Amazon S3 in JSON format\. Specify the URL in JSON format as follows:  
+ `"LoadTemplateFromURL": "https://s3.amazonaws.com/cf-templates-ozkq9d3hgiq2-us-east-1/..."`  
+ `ImportFromPhysicalId`: The physical id of the resource that contains the template\. Currently only supports AWS CloudFormation stack arn\. Specify the physical id in JSON format as follows: `ImportFromPhysicalId: “arn:aws:cloudformation:[us-east-1]:[accountId]:stack/[StackName]/[resourceId]`  
+_Required_: Yes  
+_Type_: Json  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Name` <a name="cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-name"></a>
+The name of the provisioning artifact \(for example, v1 v2beta\)\. No spaces are allowed\.  
+_Required_: No  
+_Type_: String  
+_Maximum_: `8192`  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Type` <a name="cfn-servicecatalog-cloudformationproduct-provisioningartifactproperties-type"></a>
+The type of provisioning artifact\.
+
+- `CLOUD_FORMATION_TEMPLATE` \- AWS CloudFormation template
+- `MARKETPLACE_AMI` \- AWS Marketplace AMI
+- `MARKETPLACE_CAR` \- AWS Marketplace Clusters and AWS Resources
+  _Required_: No  
+  _Type_: String  
+  _Allowed values_: `CLOUD_FORMATION_TEMPLATE | MARKETPLACE_AMI | MARKETPLACE_CAR | TERRAFORM_OPEN_SOURCE`  
+  _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+## See also<a name="aws-properties-servicecatalog-cloudformationproduct-provisioningartifactproperties--seealso"></a>
+
+- [ProvisioningArtifactProperties](https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisioningArtifactProperties.html) in the _AWS Service Catalog API Reference_

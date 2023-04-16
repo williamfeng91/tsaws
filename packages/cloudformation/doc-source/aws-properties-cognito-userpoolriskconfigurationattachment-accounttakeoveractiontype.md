@@ -1,0 +1,43 @@
+# AWS::Cognito::UserPoolRiskConfigurationAttachment AccountTakeoverActionType<a name="aws-properties-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype"></a>
+
+Account takeover action type\.
+
+## Syntax<a name="aws-properties-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-syntax"></a>
+
+To declare this entity in your AWS CloudFormation template, use the following syntax:
+
+### JSON<a name="aws-properties-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-syntax.json"></a>
+
+```
+{
+  "[EventAction](#cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-eventaction)" : String,
+  "[Notify](#cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-notify)" : Boolean
+}
+```
+
+### YAML<a name="aws-properties-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-syntax.yaml"></a>
+
+```
+  [EventAction](#cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-eventaction): String
+  [Notify](#cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-notify): Boolean
+```
+
+## Properties<a name="aws-properties-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-properties"></a>
+
+`EventAction` <a name="cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-eventaction"></a>
+The action to take in response to the account takeover action\. Valid values are as follows:
+
+- `BLOCK` Choosing this action will block the request\.
+- `MFA_IF_CONFIGURED` Present an MFA challenge if user has configured it, else allow the request\.
+- `MFA_REQUIRED` Present an MFA challenge if user has configured it, else block the request\.
+- `NO_ACTION` Allow the user to sign in\.
+  _Required_: Yes  
+  _Type_: String  
+  _Allowed values_: `BLOCK | MFA_IF_CONFIGURED | MFA_REQUIRED | NO_ACTION`  
+  _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+`Notify` <a name="cfn-cognito-userpoolriskconfigurationattachment-accounttakeoveractiontype-notify"></a>
+Flag specifying whether to send a notification\.  
+_Required_: Yes  
+_Type_: Boolean  
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
